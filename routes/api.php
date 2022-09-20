@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CheckoutApiController;
+use App\Http\Controllers\OrderApiController;
 use App\Http\Controllers\ProductsApiController;
 use App\Models\User;
 use GrahamCampbell\ResultType\Success;
@@ -42,6 +43,9 @@ Route::get('/user',[AccountApiController::class,'getUserAccount']);
 Route::put('/user',[AccountApiController::class,'update']);
 //Checkout
 Route::post('checkout',[CheckoutApiController::class,'store']);
+
+//Order
+Route::get('orders',[OrderApiController::class,'getAllOrderByAdmin']);
 
 
 
