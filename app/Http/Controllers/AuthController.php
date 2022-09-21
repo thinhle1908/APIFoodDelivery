@@ -140,6 +140,7 @@ class AuthController extends Controller
      * )
      */
     
+     
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -167,6 +168,33 @@ class AuthController extends Controller
     {
         return response()->json(auth()->user());
     }
+     /**
+     * Logout
+     * @OA\Post (
+     *     path="/api/auth/logout",
+     *     tags={"Auth"},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *            
+     *         )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="number", example="User successfully registered"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=401,
+     *          description="Unauthenticated",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="string", example="Unauthenticated."),
+     *          )
+     *      )
+     * )
+     */
     public function logout()
     {
         auth()->logout();

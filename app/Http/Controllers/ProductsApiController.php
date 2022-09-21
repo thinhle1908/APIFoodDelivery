@@ -33,6 +33,72 @@ class ProductsApiController extends Controller
 
         ]);
     }
+    /**
+     * Add Product
+     * @OA\Post (
+     *     path="/api/products",
+     *     tags={"Auth"},
+     *      security={{ "apiAuth": {} }},
+     *  * @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     description="file to upload",
+     *                     property="file",
+     *                     type="file",
+     *                ),
+     *                 @OA\Property(
+     *                  description="name",
+     *                     property="product_name",
+     *                     type="string",
+     *                     example = "ca loc nuong",
+     *                ),
+     *                 @OA\Property(
+     *                     description="name",
+     *                     property="price",
+     *                     type="number",
+     *                     example = 45000,
+     *                ),
+     *                 @OA\Property(
+     *                     description="name",
+     *                     property="qty",
+     *                     type="number",
+     *                     example = "1",
+     *                ),
+     *                 @OA\Property(
+     *                     description="name",
+     *                     property="description",
+     *                     type="string",
+     *                     example = "ca loc nuong la mot mon an thom ngon",
+     *                ),
+     *                 @OA\Property(
+     *                     description="name",
+     *                     property="arr_category",
+     *                     type="string",
+     *                     example = "5,6,9",
+     *                ),
+     *                 required={"file"}
+     *             )
+     *         )
+     *     ),
+     *      @OA\Response(
+     *          response=201,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="number", example="User successfully registered"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="erros", type="string", example="The The email field is required."),
+     *          )
+     *      )
+     * )
+     */
     public function store(Request $request)
     {
 
