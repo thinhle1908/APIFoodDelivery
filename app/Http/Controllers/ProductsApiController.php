@@ -17,6 +17,27 @@ use function Ramsey\Uuid\v1;
 
 class ProductsApiController extends Controller
 {
+      /**
+     * Get all product 
+     * @OA\Get (
+     *     path="/api/products",
+     *     tags={"Product"},
+     *       @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="number", example="true"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="erros", type="string", example="Forbidden"),
+     *          )
+     *      )
+     * )
+     */
     public function index()
     {
         $Products =  Product::where('visible', 1)->get();
@@ -37,16 +58,16 @@ class ProductsApiController extends Controller
      * Add Product
      * @OA\Post (
      *     path="/api/products",
-     *     tags={"Auth"},
+     *     tags={"Product"},
      *      security={{ "apiAuth": {} }},
-     *  * @OA\RequestBody(
+     *   @OA\RequestBody(
      *         required=true,
      *         @OA\MediaType(
      *             mediaType="multipart/form-data",
      *             @OA\Schema(
      *                 @OA\Property(
      *                     description="file to upload",
-     *                     property="file",
+     *                     property="image",
      *                     type="file",
      *                ),
      *                 @OA\Property(
@@ -79,22 +100,22 @@ class ProductsApiController extends Controller
      *                     type="string",
      *                     example = "5,6,9",
      *                ),
-     *                 required={"file"}
+     *                 required={"image"}
      *             )
      *         )
      *     ),
-     *      @OA\Response(
-     *          response=201,
+     *       @OA\Response(
+     *          response=200,
      *          description="success",
      *          @OA\JsonContent(
-     *              @OA\Property(property="message", type="number", example="User successfully registered"),
+     *              @OA\Property(property="message", type="number", example="true"),
      *          )
      *      ),
      *      @OA\Response(
-     *          response=400,
-     *          description="Bad Request",
+     *          response=403,
+     *          description="Error",
      *          @OA\JsonContent(
-     *              @OA\Property(property="erros", type="string", example="The The email field is required."),
+     *              @OA\Property(property="erros", type="string", example="Forbidden"),
      *          )
      *      )
      * )
@@ -148,6 +169,85 @@ class ProductsApiController extends Controller
             abort(403);
         }
     }
+    /**
+     * Update Product
+     * @OA\Post (
+     *     path="/api/products/{product}",
+     *     description="...",
+     *     tags={"Product"},
+     *      security={{ "apiAuth": {} }},
+     *       @OA\Parameter(
+     *         name="product",
+     *         in="path",
+     *         description="product id",
+     *         required=true,
+     *      ),
+     *   @OA\RequestBody(
+     *         required=true,
+     *         @OA\MediaType(
+     *             mediaType="multipart/form-data",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                     property="image",
+     *                     type="file",
+     *                ),
+     *                 @OA\Property(
+     *                  
+     *                     property="product_name",
+     *                     type="string",
+     *                     example = "ca loc nuong",
+     *                ),
+     *                 @OA\Property(
+     *                     
+     *                     property="price",
+     *                     type="number",
+     *                     example = 45000,
+     *                ),
+     *                 @OA\Property(
+     *                     
+     *                     property="qty",
+     *                     type="number",
+     *                     example = "1",
+     *                ),
+     *                 @OA\Property(
+     *                     
+     *                     property="description",
+     *                     type="string",
+     *                     example = "ca loc nuong la mot mon an thom ngon",
+     *                ),
+     *                 @OA\Property(
+     *                     
+     *                     property="arr_category",
+     *                     type="string",
+     *                     example = "5,6,9",
+     *                ),
+     *                  @OA\Property(
+     *                     property="_method",
+     *                     type="string",
+     *                     example = "PUT",
+     *                     
+     *                    
+     *                ),
+     *                 required={"image"}
+     *             )
+     *         )
+     *     ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="number", example="true"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="erros", type="string", example="Forbidden"),
+     *          )
+     *      )
+     * )
+     */
     public function update(Product $product, Request $request)
     {
         if (Gate::allows('admin-warehouse_staff', auth()->user())) {
@@ -200,6 +300,35 @@ class ProductsApiController extends Controller
             abort(403);
         }
     }
+     /**
+     * Delete Product
+     * @OA\Delete (
+     *     path="/api/products/{product}",
+     *     description="...",
+     *     tags={"Product"},
+     *      security={{ "apiAuth": {} }},
+     *       @OA\Parameter(
+     *         name="product",
+     *         in="path",
+     *         description="product id",
+     *         required=true,
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="success", type="number", example="true"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="erros", type="string", example="Forbidden"),
+     *          )
+     *      )
+     * )
+     */
     public function destroy(Product $product)
     {
         if (Gate::allows('admin-warehouse_staff', auth()->user())) {
@@ -213,6 +342,32 @@ class ProductsApiController extends Controller
             abort(403);
         }
     }
+      /**
+     * Search Product
+     * @OA\Get (
+     *     path="/api/search",
+     *     tags={"Product"},
+     * @OA\Parameter(
+     *         name="keyword",
+     *         in="query",
+     *         required=true,
+     *      ),
+     *       @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="number", example="true"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="erros", type="string", example="Forbidden"),
+     *          )
+     *      )
+     * )
+     */
     public function search(Request $request)
     {
         $keyword = $request->input('keyword');
@@ -228,6 +383,32 @@ class ProductsApiController extends Controller
             'Product' => $Products
         ]);
     }
+       /**
+     * Get product by id
+     * @OA\Get (
+     *     path="/api/products/{product}",
+     *     tags={"Product"},
+     * @OA\Parameter(
+     *         name="product",
+     *         in="path",
+     *         required=true,
+     *      ),
+     *       @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="number", example="true"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="erros", type="string", example="Forbidden"),
+     *          )
+     *      )
+     * )
+     */
     public function getProductByID(Product $product)
     {
 

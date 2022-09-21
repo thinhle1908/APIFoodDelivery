@@ -8,6 +8,28 @@ use Illuminate\Support\Facades\Gate;
 
 class AccountApiController extends Controller
 {
+      /**
+     * Get user by user
+     * @OA\Get (
+     *     path="/api/user",
+     *     tags={"User"},
+     *      security={{ "apiAuth": {} }},
+     *       @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="number", example="true"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="erros", type="string", example="Forbidden"),
+     *          )
+     *      )
+     * )
+     */
     public function getUserAccount()
     {
         if (Gate::allows('check-login', auth()->user())) {
@@ -78,6 +100,43 @@ class AccountApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @param  int  $id
      * @return \Illuminate\Http\Response
+     */
+    /**
+     * Update user
+     * @OA\Put (
+     *     path="/api/user",
+     *     tags={"User"},
+     *      security={{ "apiAuth": {} }},
+     *       @OA\Parameter(
+     *         name="name",
+     *         in="query",
+     *         required=true,
+     *      ),
+     *      @OA\Parameter(
+     *         name="email",
+     *         in="query",
+     *         required=true,
+     *      ),
+     *      @OA\Parameter(
+     *         name="password",
+     *         in="query",
+     *         required=true,
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="number", example="true"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="erros", type="string", example="Forbidden"),
+     *          )
+     *      )
+     * )
      */
     public function update(Request $request)
     {

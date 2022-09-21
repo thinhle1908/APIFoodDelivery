@@ -83,6 +83,28 @@ class OrderApiController extends Controller
     {
         //
     }
+      /**
+     * Get order suscess by admin
+     * @OA\Get (
+     *     path="/api/orders",
+     *     tags={"Order"},
+     *      security={{ "apiAuth": {} }},
+     *       @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="number", example="true"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Error",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="erros", type="string", example="Forbidden"),
+     *          )
+     *      )
+     * )
+     */
     public function getAllOrderByAdmin()
     {
         if (Gate::allows('admin-only', auth()->user())) {

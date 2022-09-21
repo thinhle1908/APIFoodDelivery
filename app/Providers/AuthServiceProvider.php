@@ -27,7 +27,7 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-        
+        /* Admin =1 , warhouse_staff =2, user =3 */
         Gate::define('admin-only',function($user){
             $id = $user->role;
             $checkAdmin = Role::find($id);
@@ -39,7 +39,7 @@ class AuthServiceProvider extends ServiceProvider
         Gate::define('admin-warehouse_staff',function($user){
             $id = $user->role;
             $checkAdmin = Role::find($id);
-            if($checkAdmin->role_name=="admin" ||$checkAdmin->role_name=="warehouse_staff"){
+            if($checkAdmin->role_name=="admin"||$checkAdmin->role_name=="warehouse_staff"){
                 return true;
             }
             return false;

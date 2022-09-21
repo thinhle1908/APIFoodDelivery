@@ -36,6 +36,70 @@ class CheckoutApiController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
+    /**
+     * Checkout
+     * @OA\Post (
+     *     path="/api/checkout",
+     *     tags={"Check Out"},
+     *     security={{ "apiAuth": {} }},
+     *     @OA\RequestBody(
+     *         @OA\MediaType(
+     *             mediaType="application/json",
+     *             @OA\Schema(
+     *                 @OA\Property(
+     *                      type="object",
+     *                      @OA\Property(
+     *                          property="name",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="email",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="address",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="phone",
+     *                          type="number"
+     *                      ),
+     *                 @OA\Property(
+     *                   property="cart",
+     *                   type="array",
+     *                   @OA\Items(
+     *                      @OA\Property(property="id", type="number"),
+     *                      @OA\Property(property="qty", type="number"),
+     *                      @OA\Property(property="price", type="number"),
+     *                      ),
+     *    )
+     *                 ),
+     *                 example={
+     *                     "name":"example name",
+     *                     "email":"examplecontent1@gmail.com",
+     *                     "address":"256,Nguyen Thi Minh Khai",
+     *                     "phone":"0123456789",
+     *                     "cart":{"0":{"product":{"id":3,"quanlity":1,"price":50000}},"1":{"product":{"id":5,"quanlity":2,"price":40000}},"2":{"product":{"id":6,"quanlity":5,"price":100000}}}
+     *                }
+     *             )
+     *         )
+     *      ),
+     *      @OA\Response(
+     *          response=200,
+     *          description="message",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="number", example="success"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=400,
+     *          description="Bad Request",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="erros", type="string", example="The The email field is required."),
+     *          )
+     *      )
+     * )
+     */
     public function store(Request $request)
     {
         if (Gate::allows('check-login', auth()->user())) {
@@ -81,7 +145,7 @@ class CheckoutApiController extends Controller
 
             // ]);
             return response()->json([
-                'totalPrice' =>  'success',
+                'message' =>  'success',
 
             ]);
         } else {
