@@ -18,7 +18,7 @@ class AuthController extends Controller
      * Register
      * @OA\Post (
      *     path="/api/auth/register",
-     *     tags={"ToDo"},
+     *     tags={"Auth"},
      *     @OA\RequestBody(
      *         @OA\MediaType(
      *             mediaType="application/json",
@@ -26,37 +26,43 @@ class AuthController extends Controller
      *                 @OA\Property(
      *                      type="object",
      *                      @OA\Property(
-     *                          property="title",
+     *                          property="name",
      *                          type="string"
      *                      ),
      *                      @OA\Property(
-     *                          property="content",
+     *                          property="email",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="password",
+     *                          type="string"
+     *                      ),
+     *                      @OA\Property(
+     *                          property="password_confirmation",
      *                          type="string"
      *                      )
      *                 ),
      *                 example={
-     *                     "title":"example title",
-     *                     "content":"example content"
+     *                     "name":"example name",
+     *                     "email":"examplecontent1@gmail.com",
+     *                     "password":"123456",
+     *                     "password_confirmation":"123456"
      *                }
      *             )
      *         )
      *      ),
      *      @OA\Response(
-     *          response=200,
+     *          response=201,
      *          description="success",
      *          @OA\JsonContent(
-     *              @OA\Property(property="id", type="number", example=1),
-     *              @OA\Property(property="title", type="string", example="title"),
-     *              @OA\Property(property="content", type="string", example="content"),
-     *              @OA\Property(property="updated_at", type="string", example="2021-12-11T09:25:53.000000Z"),
-     *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z"),
+     *              @OA\Property(property="message", type="number", example="User successfully registered"),
      *          )
      *      ),
      *      @OA\Response(
      *          response=400,
-     *          description="invalid",
+     *          description="Bad Request",
      *          @OA\JsonContent(
-     *              @OA\Property(property="msg", type="string", example="fail"),
+     *              @OA\Property(property="erros", type="string", example="The The email field is required."),
      *          )
      *      )
      * )
@@ -84,7 +90,7 @@ class AuthController extends Controller
      * Login
      * @OA\Post (
      *     path="/api/auth/login",
-     *     tags={"ToDo"},
+     *     tags={"Auth"},
      *     @OA\RequestBody(
      *         @OA\MediaType(
      *             mediaType="application/json",
@@ -92,17 +98,17 @@ class AuthController extends Controller
      *                 @OA\Property(
      *                      type="object",
      *                      @OA\Property(
-     *                          property="title",
+     *                          property="email",
      *                          type="string"
      *                      ),
      *                      @OA\Property(
-     *                          property="content",
+     *                          property="password",
      *                          type="string"
      *                      )
      *                 ),
      *                 example={
-     *                     "title":"example title",
-     *                     "content":"example content"
+     *                     "email":"user01@gmail.com",
+     *                     "password":"12345678"
      *                }
      *             )
      *         )
@@ -111,22 +117,29 @@ class AuthController extends Controller
      *          response=200,
      *          description="success",
      *          @OA\JsonContent(
-     *              @OA\Property(property="id", type="number", example=1),
-     *              @OA\Property(property="title", type="string", example="title"),
-     *              @OA\Property(property="content", type="string", example="content"),
-     *              @OA\Property(property="updated_at", type="string", example="2021-12-11T09:25:53.000000Z"),
-     *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z"),
+     *              @OA\Property(property="access_token", type="number", example="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJodHRwOlwvXC8xMjcuMC4wLjE6ODAwMFwvYXBpXC9hdXRoXC9sb2dpbiIsImlhdCI6MTY2MzcyMDY2MywiZXhwIjoxNjYzNzI0MjYzLCJuYmYiOjE2NjM3MjA2NjMsImp0aSI6InBpZ0hlZ0tDWlhtQWg0dDMiLCJzdWIiOjMsInBydiI6IjIzYmQ1Yzg5NDlmNjAwYWRiMzllNzAxYzQwMDg3MmRiN2E1OTc2ZjcifQ.rSZR0VJ3JsaRBgECJ-sBRpWJQrDNfk00hAoUajnxc5o"),
+     *              @OA\Property(property="token_type", type="string", example="bearer"),
+     *              @OA\Property(property="expires_in", type="number", example=3600),
+     *              @OA\Property(property="user", type="object",example={"id"=1,"email"="user01@gmail.com","email_verified_at"=null,"created_at"="2022-08-20T14:00:51.000000Z","updated_at"="2022-08-20T14:00:51.000000Z","role"=3}),
      *          )
      *      ),
      *      @OA\Response(
-     *          response=400,
-     *          description="invalid",
+     *          response=401,
+     *          description="Unauthorized",
      *          @OA\JsonContent(
-     *              @OA\Property(property="msg", type="string", example="fail"),
+     *              @OA\Property(property="error", type="string", example="Unauthorized"),
+     *          )
+     *      ),
+     *          @OA\Response(
+     *          response=422,
+     *          description="Any errors",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="error", type="string", example="...."),
      *          )
      *      )
      * )
      */
+    
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [

@@ -17,51 +17,6 @@ use function Ramsey\Uuid\v1;
 
 class ProductsApiController extends Controller
 {
-    /**
-     * Get List Product
-     * @OA\Get (
-     *     path="/api/Products",
-     *     tags={"ToDo"},
-     *     @OA\Response(
-     *         response=200,
-     *         description="success",
-     *         @OA\JsonContent(
-     *             @OA\Property(
-     *                 type="array",
-     *                 property="rows",
-     *                 @OA\Items(
-     *                     type="object",
-     *                     @OA\Property(
-     *                         property="_id",
-     *                         type="number",
-     *                         example="1"
-     *                     ),
-     *                     @OA\Property(
-     *                         property="title",
-     *                         type="string",
-     *                         example="example title"
-     *                     ),
-     *                     @OA\Property(
-     *                         property="content",
-     *                         type="string",
-     *                         example="example content"
-     *                     ),
-     *                     @OA\Property(
-     *                         property="updated_at",
-     *                         type="string",
-     *                         example="2021-12-11T09:25:53.000000Z"
-     *                     ),
-     *                     @OA\Property(
-     *                         property="created_at",
-     *                         type="string",
-     *                         example="2021-12-11T09:25:53.000000Z"
-     *                     )
-     *                 )
-     *             )
-     *         )
-     *     )
-     * )
-     */
     public function index()
     {
         $Products =  Product::where('visible', 1)->get();
@@ -78,53 +33,6 @@ class ProductsApiController extends Controller
 
         ]);
     }
-    /**
-     * Create Product
-     * @OA\Product (
-     *     path="/api/Product",
-     *     tags={"ToDo"},
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                      type="object",
-     *                      @OA\Property(
-     *                          property="title",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="content",
-     *                          type="string"
-     *                      )
-     *                 ),
-     *                 example={
-     *                     "title":"example title",
-     *                     "content":"example content"
-     *                }
-     *             )
-     *         )
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="success",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="id", type="number", example=1),
-     *              @OA\Property(property="title", type="string", example="title"),
-     *              @OA\Property(property="content", type="string", example="content"),
-     *              @OA\Property(property="updated_at", type="string", example="2021-12-11T09:25:53.000000Z"),
-     *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z"),
-     *          )
-     *      ),
-     *      @OA\Response(
-     *          response=400,
-     *          description="invalid",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="msg", type="string", example="fail"),
-     *          )
-     *      )
-     * )
-     */
     public function store(Request $request)
     {
 
@@ -174,52 +82,6 @@ class ProductsApiController extends Controller
             abort(403);
         }
     }
-    /**
-     * Update Product
-     * @OA\Put (
-     *     path="/api/Products/{Product}",
-     *     tags={"ToDo"},
-     *     @OA\Parameter(
-     *         in="path",
-     *         name="id",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\RequestBody(
-     *         @OA\MediaType(
-     *             mediaType="application/json",
-     *             @OA\Schema(
-     *                 @OA\Property(
-     *                      type="object",
-     *                      @OA\Property(
-     *                          property="title",
-     *                          type="string"
-     *                      ),
-     *                      @OA\Property(
-     *                          property="content",
-     *                          type="string"
-     *                      )
-     *                 ),
-     *                 example={
-     *                     "title":"example title",
-     *                     "content":"example content"
-     *                }
-     *             )
-     *         )
-     *      ),
-     *      @OA\Response(
-     *          response=200,
-     *          description="success",
-     *          @OA\JsonContent(
-     *              @OA\Property(property="id", type="number", example=1),
-     *              @OA\Property(property="title", type="string", example="title"),
-     *              @OA\Property(property="content", type="string", example="content"),
-     *              @OA\Property(property="updated_at", type="string", example="2021-12-11T09:25:53.000000Z"),
-     *              @OA\Property(property="created_at", type="string", example="2021-12-11T09:25:53.000000Z")
-     *          )
-     *      )
-     * )
-     */
     public function update(Product $product, Request $request)
     {
         if (Gate::allows('admin-warehouse_staff', auth()->user())) {
@@ -272,26 +134,6 @@ class ProductsApiController extends Controller
             abort(403);
         }
     }
-    /**
-     * Delete Todo
-     * @OA\Delete (
-     *     path="/api/Products/{Product}",
-     *     tags={"ToDo"},
-     *     @OA\Parameter(
-     *         in="path",
-     *         name="id",
-     *         required=true,
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="success",
-     *         @OA\JsonContent(
-     *             @OA\Property(property="msg", type="string", example="delete todo success")
-     *         )
-     *     )
-     * )
-     */
     public function destroy(Product $product)
     {
         if (Gate::allows('admin-warehouse_staff', auth()->user())) {
