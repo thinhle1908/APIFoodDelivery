@@ -46,6 +46,7 @@ Route::post('checkout',[CheckoutApiController::class,'store']);
 
 //Order
 Route::get('orders',[OrderApiController::class,'getAllOrderByAdmin']);
+Route::put('change-order-status',[OrderApiController::class,'changeStatus']);
 
 
 

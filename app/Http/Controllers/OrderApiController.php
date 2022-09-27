@@ -83,7 +83,7 @@ class OrderApiController extends Controller
     {
         //
     }
-      /**
+    /**
      * Get order suscess by admin
      * @OA\Get (
      *     path="/api/orders",
@@ -108,8 +108,48 @@ class OrderApiController extends Controller
     public function getAllOrderByAdmin()
     {
         if (Gate::allows('admin-only', auth()->user())) {
-            $orders = Order::where('order_status',1)->get();
-            return response()-> json(['orders'=>$orders]);
+            $orders = Order::where('order_status', 1)->get();
+            return response()->json(['orders' => $orders]);
+        } else {
+            abort(403);
+        }
+    }
+    /**
+     * Change order status
+     * @OA\Get (
+     *     path="/api/change-order-status",
+     *     tags={"Order"},
+     *      security={{ "apiAuth": {} }},
+     *       @OA\Response(
+     *          response=200,
+     *          description="success",
+     *          @OA\JsonContent(
+     *              @OA\Property(property="message", type="number", example="true"),
+     *          )
+     *      ),
+     *      @OA\Response(
+     *          response=403,
+     *          description="Error
+     *          @OA\JsonContent(
+     *              @OA\Property(property="erros", type="string", example="Forbidden"),
+     *          )
+     *      )
+     * )
+     */
+    public function changeStatus(Request $request)
+    {
+        if (Gate::allows('admin-only', auth()->user())) {
+            request()->validate([
+                'order_id' => 'required',
+                'order_status' => 'required|digits:1,4'
+            ]);
+            $order = Order::where('order_id', $request->order_id)->first();
+            if (!empty($order)) {
+                $message = $order->update(['order_status' => $request->order_status]);
+                return response()->json(['message' => $message]);
+            } else {
+                return response()->json(['message' => "ID Not found"]);
+            }
         } else {
             abort(403);
         }
