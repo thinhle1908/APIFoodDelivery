@@ -124,16 +124,15 @@ class BlogApiController extends Controller
                         'article_content' => request('article_content'),
                     ]);
                     return response()->json([
-                        'success' => $success
+                        'message' => $success
                     ]);
-                }
-                else{
-                    return response()->json([
-                        'message' => "Not found blog"
-                    ]);
+                } else {
+                    abort(403);
                 }
             } else {
-                abort(403);
+                return response()->json([
+                    'message' => "Not found blog"
+                ]);
             }
         } else {
             abort(403);
@@ -148,6 +147,24 @@ class BlogApiController extends Controller
      */
     public function destroy($id)
     {
-        //
+        if (Gate::allows('check-login', auth()->user())) {
+            $blog = Blog::find($id);
+            if (!empty($blog)) {
+                if ($blog->user_id == auth()->user()->id || Gate::allows('admin-only', auth()->user())) {
+                    $success = $blog->delete();
+                    return response()->json([
+                        'message' => $success
+                    ]);
+                } else {
+                    abort(403);
+                }
+            } else {
+                return response()->json([
+                    'message' => "Not found blog"
+                ]);
+            }
+        } else {
+            abort(403);
+        }
     }
 }

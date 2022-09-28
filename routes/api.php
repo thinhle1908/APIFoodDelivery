@@ -52,7 +52,8 @@ Route::put('change-order-status',[OrderApiController::class,'changeStatus']);
 //Blog
 Route::get('blogs',[BlogApiController::class,'index']);
 Route::post('blogs',[BlogApiController::class,'store']);
-Route::put('blogs',[BlogApiController::class,'update']);
+Route::put('blogs/{id}',[BlogApiController::class,'update']);
+Route::delete('blogs/{id}',[BlogApiController::class,'destroy']);
 
 
 
