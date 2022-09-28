@@ -141,11 +141,13 @@ class OrderApiController extends Controller
         if (Gate::allows('admin-only', auth()->user())) {
             request()->validate([
                 'order_id' => 'required',
-                'order_status' => 'required|digits:1,4'
+                'order_status' => 'required|integer|between:1,4'
             ]);
-            $order = Order::where('order_id', $request->order_id)->first();
+            $order = Order::find( $request->order_id);
             if (!empty($order)) {
-                $message = $order->update(['order_status' => $request->order_status]);
+                $message = $order->update([
+                    'order_status' => $request->order_status
+                ]);
                 return response()->json(['message' => $message]);
             } else {
                 return response()->json(['message' => "ID Not found"]);

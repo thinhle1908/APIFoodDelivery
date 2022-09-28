@@ -4,6 +4,7 @@ use App\Http\Controllers\AccountApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BlogApiController;
 use App\Http\Controllers\CheckoutApiController;
 use App\Http\Controllers\OrderApiController;
 use App\Http\Controllers\ProductsApiController;
@@ -48,6 +49,10 @@ Route::post('checkout',[CheckoutApiController::class,'store']);
 Route::get('orders',[OrderApiController::class,'getAllOrderByAdmin']);
 Route::put('change-order-status',[OrderApiController::class,'changeStatus']);
 
+//Blog
+Route::get('blogs',[BlogApiController::class,'index']);
+Route::post('blogs',[BlogApiController::class,'store']);
+Route::put('blogs',[BlogApiController::class,'update']);
 
 
 
